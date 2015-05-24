@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">	
+	*{
+		padding: 0;
+		margin: 0;
+	}
+	body{
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+	.box{		
+		width: 210px;
+		
+		background-color: rgba(0,0,0,0.8);
+		color: #fff;
+		position: absolute;		
+		left: 50%;
+		margin-left: -100px;
+		margin-top: 20px;	
+	}
+	.box button{
+		margin: 0 5px;
+		border: none;
+		width: 16px;
+		height: 16px;
+	}
+	.box p{
+		margin: 10px 20px;
+	}
+	.box span{
+		width: 23px;
+		overflow: hidden;
+	}
+	.box button:last-of-type,.box span{
+		float: right;
+	}
+	.color span{
+		width: 62px;
+	}
+	#colorBox{
+		width: 100%;
+		height: 24px;
+		background-color: rgba(0,0,0,0.8);
+		position: absolute;
+		display: none;
+	}
+	#colorBox li{
+		display: inline-block;
+		height: 16px;
+		width: 16px;
+		line-height: 30px;
+		margin-left: 11px;
+		background-color: #ff0000;
+	}
+
+	</style>
+</head>
+<body>
+
+</body>
+<div class="box">
+	<p><button id="iXSubtract">-</button><button id="iXPlus">+</button>单行数量:<span id="iX"></span></p>
+	<p><button id="noiseSubtract">-</button><button id="noisePlus">+</button><del>Noise:</del><span id="noise"></span></p>
+	<p><button id="FDSubtract">-</button><button id="FDPlus">+</button>freeDegree:<span id="freeDegree"></span></p>
+	<p class="color"><button id="color1Btn">+</button>color1:<span id="Scolor1">Red</span></p>
+	<p class="color"><button id="color2Btn">+</button>color2:<span id="Scolor2">Red</span></p>
+	<ul id="colorBox">
+	
+	</ul>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script type="text/javascript" src='js/triangle.js'></script>
+<script type="text/javascript">
+	var S_iX = document.getElementById('iX');
+	var iXPlus = document.getElementById('iXPlus');
+	var iXSubtract = document.getElementById('iXSubtract');
+
+	var S_freeDegree = document.getElementById('freeDegree');
+	var FDPlus = document.getElementById('FDPlus');
+	var FDSubtract = document.getElementById('FDSubtract');
+
+	var S_noise = document.getElementById('noise');
+	var noiseSubtract = document.getElementById('noiseSubtract');
+	var noisePlus = document.getElementById('noisePlus');
+
+	var colorBox = document.getElementById('colorBox');
+	var S_color1 = document.getElementById('Scolor1');
+	var color1Btn = document.getElementById('color1Btn');
+
+	var S_color2 = document.getElementById('Scolor2');
+	var color2Btn = document.getElementById('color2Btn');
+
+	var colors = ['#ff0000','#ff7d00','#ffff00','#00ff00','#0000ff','#00ffff','#ff00ff']
+	var setColor,selectedColor ;
+
+	var innitColorBox = function(){
+
+		function removeChildren(pnode){
+
+			var childs=pnode.childNodes;    
+			for(var i=childs.length-1;i>=0;i--){    
+				pnode.removeChild(childs.item(i));    
+			}    
+		}
+		removeChildren(colorBox);
+		for (var i = 0; i < colors.length; i++) {
+			var newLi = document.createElement("li");
+			newLi.style.backgroundColor = colors[i];
+			newLi.index = i;
+			colorBox.appendChild(newLi);			
+			}
+		
+	}
+	var oLi = document.getElementsByTagName('li');
+
+	color1Btn.onclick = function(){
+		innitColorBox();
+		colorBox.style.display = 'block';
+		for (var i = 0; i < oLi.length; i++) {
+			oLi[i].onclick = function(){
+				colora = colors[this.index];
+				// S_color1.innerHTML = colora;
+				show();
+				colorBox.style.display = 'none';
+			}
+		};
+	}
+	color2Btn.onclick = function(){
+		innitColorBox();
+		colorBox.style.display = 'block';
+		for (var i = 0; i < oLi.length; i++) {
+			oLi[i].onclick = function(){
+				colorb = colors[this.index];
+				// S_color1.innerHTML = colora;
+				show();
+				colorBox.style.display = 'none';
+			}
+		};
+	}
+
+	var selectColor = function(setColor,selectedColor){
+		setColor = selectedColor;
+		alert(setColor);
+	}
+
+
+
+	
+	var show = function(){
+		S_iX.innerHTML = iX;
+		S_freeDegree.innerHTML = freeDegree;
+		S_noise.innerHTML= noise;
+		S_color1.innerHTML = colora;
+		S_color2.innerHTML = colorb;		
+		intPoint ();
+		initRectangular ();
+		// ctx.clearRect(0,0,canvas.width,canvas.height);
+		// rectangular.forEach(draw);		
+	}
+
+	show();
+
+	iXPlus.onclick = function(){		
+			iX ++;
+			if(iX>25){
+				iX = 25;
+			}
+			show();
+	}	
+	iXSubtract.onclick = function(){		
+			iX --;
+			if(iX<0){
+				iX = 0;
+			}
+			show();
+	}
+	noisePlus.onclick = function(){		
+			noise += 5;
+			if(noise>50){
+				noise = 50;
+			}
+			show();
+	}	
+	noiseSubtract.onclick = function(){		
+			noise -=5;
+			if(noise<0){
+				noise = 0;
+			}
+			show();
+	}		
+	FDPlus.onclick = function(){		
+			freeDegree += 0.1;
+			if(freeDegree>1){
+				freeDegree = 1;					
+			}
+			freeDegree = parseFloat(freeDegree);
+			show();
+	}	
+	FDSubtract.onclick = function(){		
+			freeDegree -= 0.1;
+			if(freeDegree<=0.1){
+				freeDegree=0;				
+			}
+			freeDegree = parseFloat(freeDegree);
+			show();
+	}	
+
+
+	
+
+	var time = 0;
+	var random = 0.01;
+	function draw (rectangular) {		
+		if(rectangular.indexX*rectangular.indexY != 0 && (rectangular.indexX != 6 && rectangular.indexY != 9)){
+			// rectangular.a[0] += (Math.random()-0.5)*0.5;
+			// rectangular.a[1] += (Math.random()-0.5)*0.5;
+			// rectangular.b[0] += (Math.random()-0.5)*0.5;
+			// rectangular.b[1] += (Math.random()-0.5)*0.5;
+			// rectangular.c[0] += (Math.random()-0.5)*0.5;
+			// rectangular.c[1] += (Math.random()-0.5)*0.5;
+			// rectangular.d[0] += (Math.random()-0.5)*0.5;
+			// rectangular.d[1] += (Math.random()-0.5)*0.5;
+			rectangular.a[0] = move(rectangular.a[0]);
+			rectangular.a[1] = move(rectangular.a[1]);
+			rectangular.b[0] = move(rectangular.b[0]);
+			rectangular.b[1] = move(rectangular.b[1]);
+			rectangular.c[0] = move(rectangular.c[0]);
+			rectangular.c[1] = move(rectangular.c[1]);
+			rectangular.d[0] = move(rectangular.d[0]);
+			rectangular.d[1] = move(rectangular.d[1]);
+			
+
+		}
+		function move (r) {
+			return r + random;
+			// body...
+		}
+		
+		rectangular.draw(ctx);
+	}
+	
+	(
+		function drawFrame(){
+	        window.requestAnimationFrame(drawFrame,canvas);
+	        ctx.clearRect(0,0,canvas.width,canvas.height);
+			rectangular.forEach(draw);	
+			time++;
+			if(time%300 == 0){				
+				random = Math.random()/10;				
+			}	
+			if(time == 600 ){
+				intPoint ();
+				initRectangular ();
+				time = 0;
+			}
+	        	        
+	    }()
+	);
+
+
+</script>
+</html>
