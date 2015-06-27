@@ -216,7 +216,7 @@
 	
 
 	var time = 0;
-	var random = 0.01;
+	var random = 0.01*(Math.random-0.5);
 	function draw (rectangular) {		
 		if(rectangular.indexX*rectangular.indexY != 0 && (rectangular.indexX != 6 && rectangular.indexY != 9)){
 			// rectangular.a[0] += (Math.random()-0.5)*0.5;
@@ -252,14 +252,14 @@
 	        ctx.clearRect(0,0,canvas.width,canvas.height);
 			rectangular.forEach(draw);	
 			time++;
-			if(time%300 == 0){				
-				random = Math.random()/10;				
-			}	
-			if(time == 600 ){
-				intPoint ();
-				initRectangular ();
-				time = 0;
-			}
+			// if(time%300 == 0){				
+			// 	random = Math.random()/10;				
+			// }	
+			// if(time == 600 ){
+			// 	intPoint ();
+			// 	initRectangular ();
+			// 	time = 0;
+			// }
 	        	        
 	    }()
 	);
