@@ -57,7 +57,6 @@
 		margin-left: 11px;
 		background-color: #ff0000;
 	}
-
 	</style>
 </head>
 <body>
@@ -81,29 +80,21 @@
 	var S_iX = document.getElementById('iX');
 	var iXPlus = document.getElementById('iXPlus');
 	var iXSubtract = document.getElementById('iXSubtract');
-
 	var S_freeDegree = document.getElementById('freeDegree');
 	var FDPlus = document.getElementById('FDPlus');
 	var FDSubtract = document.getElementById('FDSubtract');
-
 	var S_noise = document.getElementById('noise');
 	var noiseSubtract = document.getElementById('noiseSubtract');
 	var noisePlus = document.getElementById('noisePlus');
-
 	var colorBox = document.getElementById('colorBox');
 	var S_color1 = document.getElementById('Scolor1');
 	var color1Btn = document.getElementById('color1Btn');
-
 	var S_color2 = document.getElementById('Scolor2');
 	var color2Btn = document.getElementById('color2Btn');
-
 	var colors = ['#ff0000','#ff7d00','#ffff00','#00ff00','#0000ff','#00ffff','#ff00ff']
 	var setColor,selectedColor ;
-
 	var innitColorBox = function(){
-
 		function removeChildren(pnode){
-
 			var childs=pnode.childNodes;    
 			for(var i=childs.length-1;i>=0;i--){    
 				pnode.removeChild(childs.item(i));    
@@ -119,7 +110,6 @@
 		
 	}
 	var oLi = document.getElementsByTagName('li');
-
 	color1Btn.onclick = function(){
 		innitColorBox();
 		colorBox.style.display = 'block';
@@ -144,14 +134,10 @@
 			}
 		};
 	}
-
 	var selectColor = function(setColor,selectedColor){
 		setColor = selectedColor;
 		alert(setColor);
 	}
-
-
-
 	
 	var show = function(){
 		S_iX.innerHTML = iX;
@@ -164,9 +150,7 @@
 		// ctx.clearRect(0,0,canvas.width,canvas.height);
 		// rectangular.forEach(draw);		
 	}
-
 	show();
-
 	iXPlus.onclick = function(){		
 			iX ++;
 			if(iX>25){
@@ -211,12 +195,9 @@
 			freeDegree = parseFloat(freeDegree);
 			show();
 	}	
-
-
 	
-
 	var time = 0;
-	var random = 0.01*(Math.random-0.5);
+	var random = 0.01;
 	function draw (rectangular) {		
 		if(rectangular.indexX*rectangular.indexY != 0 && (rectangular.indexX != 6 && rectangular.indexY != 9)){
 			// rectangular.a[0] += (Math.random()-0.5)*0.5;
@@ -236,7 +217,6 @@
 			rectangular.d[0] = move(rectangular.d[0]);
 			rectangular.d[1] = move(rectangular.d[1]);
 			
-
 		}
 		function move (r) {
 			return r + random;
@@ -252,18 +232,16 @@
 	        ctx.clearRect(0,0,canvas.width,canvas.height);
 			rectangular.forEach(draw);	
 			time++;
-			// if(time%300 == 0){				
-			// 	random = Math.random()/10;				
-			// }	
-			// if(time == 600 ){
-			// 	intPoint ();
-			// 	initRectangular ();
-			// 	time = 0;
-			// }
+			if(time%300 == 0){				
+				random = Math.random()/10;				
+			}	
+			if(time == 600 ){
+				intPoint ();
+				initRectangular ();
+				time = 0;
+			}
 	        	        
 	    }()
 	);
-
-
 </script>
 </html>
